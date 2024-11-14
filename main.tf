@@ -9,8 +9,6 @@ data "aws_vpc" "default" {
 resource "aws_instance" "Homework" {
   ami           = "ami-0eddb4a4e7d846d6f"
   instance_type = "t2.micro"
-  subnet_id     = aws_subnet.default_subnet.id
-
   tags = {
     Name = "Homework-Instance"
   }
