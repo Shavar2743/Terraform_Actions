@@ -1,11 +1,12 @@
 name: Terraform workflow
 
-on: push
+on: [push, workflow_dispatch]
 
 jobs:
     apply:
         name: 'Terraform apply'
         runs-on: ubuntu-latest
+        if: github.event_name == 'push'
         steps:
             - name: Checkout rep
               uses: actions/checkout@v3
@@ -25,3 +26,30 @@ jobs:
 
             - name: Terraform apply
               run: terraform apply -auto-approve
+
+            - name: Terraform destroy
+              run: terraform destroy -auto-approve
+
+    destroy:
+        name: 'Terraform destroy'
+        runs-on: ubuntu-latest
+        if: github.event_name == 'workflow_dispatch'
+        steps:
+            - name: Checkout rep
+              uses: actions/checkout@v3
+
+            - name: Terraform setup
+              uses: hashicorp/setup-terraform@v3
+
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v1
+              with:
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                aws-region: eu-central-1
+
+            - name: Terraform init
+              run: terraform init
+
+            - name: Terraform destroy
+              run: terraform destroy -auto-approve
