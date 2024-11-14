@@ -6,16 +6,6 @@ data "aws_vpc" "default" {
   default = true
 }
 
-resource "aws_subnet" "additional_subnet" {
-  vpc_id            = data.aws_vpc.default.id
-  cidr_block        = "172.31.4.0/24"
-  availability_zone = "eu-central-1a"
-
-  tags = {
-    Name = "Additional Subnet"
-  }
-}
-
 resource "aws_instance" "Homework" {
   ami           = "ami-0eddb4a4e7d846d6f"
   instance_type = "t2.micro"
