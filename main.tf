@@ -6,13 +6,13 @@ data "aws_vpc" "default" {
   default = true
 }
 
-resource "aws_subnet" "default_subnet" {
+resource "aws_subnet" "additional_subnet" {
   vpc_id            = data.aws_vpc.default.id
-  cidr_block        = "172.31.1.0/24"
+  cidr_block        = "172.31.4.0/24"
   availability_zone = "eu-central-1a"
 
   tags = {
-    Name = "Default Subnet"
+    Name = "Additional Subnet"
   }
 }
 
